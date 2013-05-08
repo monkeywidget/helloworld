@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>img{ height: 100px; float: left; }</style>
+  <!-- GOOG has their own distribution of jQuery -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <!-- script src="http://code.jquery.com/jquery-1.9.1.js"></script -->
+
+</head>
+<body>
+
+<div>
+DESCRIPTION:
+  https://dev.twitter.com/docs/api/1/get/search
+
+  http://search.twitter.com/search.json?q=blue%20angels&rpp=5&include_entities=true&result_type=mixed
+
+  <pre>curl -i -H "Accept: application/json" 'http://search.twitter.com/search.json?q=blue%20angels&rpp=5&include_entities=true&result_type=mixed'</pre>
+</div>
+
+<div id="results">
+
+</div>
+
+<script>
+(function() {
+
+  var twitterAPI = "http://search.twitter.com/search.json?";
+  $.getJSON( twitterAPI, {
+    q: "blue angels",
+    rpp: "5",
+    include_entities: "true",
+    result_type: "mixed"
+  })
+
+     
+  .done(function( data ) {
+
+    var items = [];   // make an array of all the results
+
+    $.each(data, function(key, val) {
+      items.push('<li id="' + key + '">' + val + '</li>');
+    });
+
+    $('<ul/>', {
+      'class': 'my-results-list',
+      html: items.join('')
+    }).appendTo( "#results" );
+
+   });  // end .done
+
+})();
+</script>
+ 
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>img{ height: 100px; float: right; }</style>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+<body>
+<div>
+  To replicate this manually on the command line:
+<pre>curl -i -H "Accept: application/json" \
+'http://api.flickr.com/services/feeds/photos_public.gne?tags=mount%20rainier&tagmode=any&format=json' \
+> example_flickr.json</pre>
+
+  More at
+  http://www.flickr.com/services/api/response.json.html
+
+Note:
+  JSONp has a callback thing, which is what the ? is for at the end of the URL
+  http://www.jquery4u.com/json/jsonp-examples/
+
+  The ".done" is a handler that will be called by getJSON when it's finished.
+
+  This one starts with a div called "#images" - the data then makes img entities, and then appends the src attribute to the img.
+
+  
+</div>
+
+<div id="images">
+ 
+</div>
+<script>
+(function() {
+  var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON( flickerAPI, {
+    tags: "mount rainier",
+    tagmode: "any",
+    format: "json"
+  })
+  .done(function( data ) {
+    $.each( data.items, function( i, item ) {
+      $( "<img/>" ).attr( "src", item.media.m ).appendTo( "#images" );
+      if ( i === 3 ) {
+        return false;
+      }
+    });
+  });
+})();
+</script>
+ 
+</body>
+</html>
